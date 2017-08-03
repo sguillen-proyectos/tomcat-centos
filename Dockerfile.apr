@@ -11,6 +11,9 @@ ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 RUN mkdir -p "$CATALINA_HOME"
 
+COPY ./install-apr.sh /root/install-apr.sh
+COPY ./install-tomcat-native.sh /root/install-tomcat-native.sh
+
 RUN yum install -y expat-devel openssl-devel \
     && yum install -y make gcc g++ \
     && wget -q https://archive.apache.org/dist/apr/apr-1.4.4.tar.gz \
@@ -19,18 +22,11 @@ RUN yum install -y expat-devel openssl-devel \
     && wget --no-cookies --no-check-certificate \
     --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
     http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm \
-    && yum localinstall -y jdk-8u144-linux-x64.rpm
-
-# Install apr and apr-util
-COPY ./install-apr.sh /root/install-apr.sh
-RUN bash /root/install-apr.sh
-
-COPY ./install-tomcat-native.sh /root/install-tomcat-native.sh
-RUN tar xvzf apache-tomcat-7.0.79.tar.gz -C $CATALINA_HOME --strip-components=1 \
-    && bash /root/install-tomcat-native.sh
-
-# Remove unecessary files
-RUN yum remove -y jdk1.8.0_144 \
+    && yum localinstall -y jdk-8u144-linux-x64.rpm \
+    && bash /root/install-apr.sh \
+    && tar xvzf apache-tomcat-7.0.79.tar.gz -C $CATALINA_HOME --strip-components=1 \
+    && bash /root/install-tomcat-native.sh \
+    && yum remove -y jdk1.8.0_144 \
     && rm -rf /root/* \
     && yum remove -y autoconf automake bison byacc cscope ctags diffstat doxygen elfutils flex gcc-c++ gcc-gfortran indent intltool libtool patch patchutils rcs rpm-build subversion swig systemtap \
     && yum remove -y $(rpm -qa "*-devel")
