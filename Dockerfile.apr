@@ -23,9 +23,9 @@ RUN yum install -y expat-devel openssl-devel \
 
 # Install apr and apr-util
 COPY ./install-apr.sh /root/install-apr.sh
-COPY ./install-tomcat-native.sh /root/install-tomcat-native.sh
 RUN bash /root/install-apr.sh
 
+COPY ./install-tomcat-native.sh /root/install-tomcat-native.sh
 RUN tar xvzf apache-tomcat-7.0.79.tar.gz -C $CATALINA_HOME --strip-components=1 \
     && bash /root/install-tomcat-native.sh
 
