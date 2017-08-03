@@ -1,4 +1,4 @@
-FROM sguillen/jre-centos:8
+FROM sguillen/centos-jre:8
 MAINTAINER donkeysharp <serguimant@gmail.com>
 
 RUN yum install expat-devel openssl-devel \
