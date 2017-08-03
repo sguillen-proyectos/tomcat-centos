@@ -1,0 +1,12 @@
+FROM sguillen/jre-centos:8
+MAINTAINER donkeysharp <serguimant@gmail.com>
+
+RUN yum install expat-devel openssl-devel \
+    && yum groupinstall "Development Tools" \
+    && wget https://archive.apache.org/dist/apr/apr-1.4.4.tar.gz \
+    && wget https://archive.apache.org/dist/apr/apr-util-1.4.1.tar.gz \
+    && wget http://www-us.apache.org/dist/tomcat/tomcat-7/v7.0.79/bin/apache-tomcat-7.0.79.tar.gz \
+    && wget --no-cookies --no-check-certificate \
+    --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
+    http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm \
+    && yum localinstall jdk-8u144-linux-x64.rpm
