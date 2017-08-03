@@ -30,9 +30,10 @@ RUN tar xvzf apache-tomcat-7.0.79.tar.gz -C $CATALINA_HOME --strip-components=1 
     && bash /root/install-tomcat-native.sh
 
 # Remove unecessary files
-RUN yum groupremove -y "Development Tools" || true \
-    && yum remove -y jdk1.8.0_144 \
-    && rm -rf /root/*
+RUN yum remove -y jdk1.8.0_144 \
+    && rm -rf /root/* \
+    && yum remove -y autoconf automake bison byacc cscope ctags diffstat doxygen elfutils flex gcc-c++ gcc-gfortran indent intltool libtool patch patchutils rcs rpm-build subversion swig systemtap \
+    && yum remove -y $(rpm -qa "*-devel")
 
 COPY server.xml $CATALINA_HOME/conf/server.xml
 
